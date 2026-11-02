@@ -101,3 +101,23 @@ The full Wix website, including its AI chatbot, is separate from the Dockerized 
 - Public HTTPS application hosting
 - Cloud resource lifecycle management
 - Technical documentation
+
+## Deployment Evidence
+
+The screenshots below document the Docker and Microsoft Azure deployment process.
+
+### Docker Container Image
+
+![Docker image](04-docker-image.png)
+
+### Azure Container Registry
+
+![Azure Container Registry](avora-clinic%20repository.png)
+
+### Azure Container Apps
+
+![Azure Container App overview](Azure%20Container%20App%20overview.png)
+
+### Successfully Deployed Application
+
+![AVORA CLINIC deployed website](live%20AVORA%20CLINIC%20website.png)
