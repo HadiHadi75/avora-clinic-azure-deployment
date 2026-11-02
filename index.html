@@ -1,0 +1,868 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AVORA CLINIC Treatments</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden;
+  background: #0c0c0b;
+  color: #f4eee3;
+  font: 15px Arial, sans-serif;
+}
+
+main {
+  width: 100%;
+  max-width: 1180px;
+  margin: auto;
+  padding: 26px;
+}
+
+h1, h2 {
+  font-family: Georgia, serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 34px;
+  margin: 0 0 12px;
+}
+
+p {
+  line-height: 1.5;
+  color: #c9c3b8;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 28px;
+}
+
+.layout > section,
+.layout > aside {
+  min-width: 0;
+}
+
+.tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 22px 0;
+}
+
+input,
+select {
+  background: #191916;
+  color: #f4eee3;
+  border: 1px solid #77705e;
+  border-radius: 4px;
+  padding: 12px;
+  max-width: 100%;
+  font: inherit;
+}
+
+input {
+  flex: 1;
+  min-width: 140px;
+}
+
+button,
+.checkout {
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid #c8b487;
+  background: transparent;
+  color: #e9d8ad;
+  padding: 10px 16px;
+  border-radius: 4px;
+}
+
+button:hover,
+button[aria-pressed="true"] {
+  background: #c8b487;
+  color: #111;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid #353329;
+  padding: 18px 0;
+}
+
+.row h3 {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 0 0 7px;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  color: #c8b487;
+  font-size: 13px;
+}
+
+.row button {
+  flex-shrink: 0;
+}
+
+.list {
+  max-height: 620px;
+  overflow: auto;
+  padding-right: 12px;
+  scrollbar-color: #9c8963 #191916;
+}
+
+aside {
+  background: #191916;
+  padding: 22px;
+  border: 1px solid #59513d;
+  border-radius: 6px;
+  align-self: start;
+  position: sticky;
+  top: 16px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+aside h2 {
+  margin-top: 0;
+}
+
+.item {
+  padding: 12px 0;
+  border-bottom: 1px solid #454133;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.item button {
+  padding: 3px 8px;
+  margin-top: 7px;
+  font-size: 12px;
+}
+
+.total {
+  font-size: 19px;
+  margin: 20px 0;
+}
+
+.checkout {
+  display: block;
+  background: #c8b487;
+  color: #111;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.checkout[aria-disabled="true"] {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.small {
+  font-size: 12px;
+}
+
+.count {
+  color: #d7c39b;
+}
+
+.status {
+  min-height: 20px;
+  font-size: 13px;
+  color: #d7c39b;
+}
+
+/* APPOINTMENT BOX */
+
+.appointment-picker {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 22px 0;
+  padding: 16px;
+  border: 1px solid #c8b487;
+  border-radius: 6px;
+  background: #11110f;
+  overflow: hidden;
+}
+
+.appointment-picker h3 {
+  font: normal 20px Georgia, serif;
+  color: #e9d8ad;
+  margin: 0 0 16px;
+  overflow-wrap: anywhere;
+}
+
+.appointment-picker label {
+  display: block;
+  margin: 12px 0 6px;
+}
+
+/* MOBILE DATE AND TIME FIELD FIX */
+
+.appointment-picker input,
+.appointment-picker select {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0 0 12px;
+  padding: 12px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #f4eee3;
+  color-scheme: dark;
+}
+
+.appointment-picker input[type="date"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  height: 48px;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #77705e;
+  border-radius: 4px;
+  background: #191916;
+  color: #f4eee3;
+  font-size: 16px;
+  line-height: normal;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.appointment-picker input[type="date"]::-webkit-date-and-time-value {
+  min-height: 1.25em;
+  text-align: left;
+}
+
+.appointment-picker input[type="date"]::-webkit-datetime-edit {
+  min-width: 0;
+  padding: 0;
+}
+
+.appointment-picker input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 1;
+}
+
+/* VISIBLE DATE PROMPT FOR IPHONE */
+
+.date-field {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.date-field input {
+  position: relative;
+  z-index: 1;
+}
+
+.date-placeholder {
+  position: absolute;
+  left: 13px;
+  top: 14px;
+  z-index: 2;
+  color: #bcb6a9;
+  font-size: 15px;
+  line-height: 20px;
+  pointer-events: none;
+  background: #191916;
+  padding-right: 8px;
+}
+
+.date-field.has-date .date-placeholder {
+  display: none;
+}
+
+.selection-summary {
+  font-size: 13px;
+  color: #d7c39b;
+  line-height: 1.5;
+}
+
+.checkout:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+/* MOBILE RESPONSIVE LAYOUT */
+
+@media (max-width: 720px) {
+  main {
+    padding: 18px;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  aside {
+    position: static;
+    grid-row: 1;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    padding: 18px;
+  }
+
+  .appointment-picker {
+    padding: 14px;
+  }
+
+  .list {
+    max-height: 500px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .row {
+    gap: 10px;
+  }
+
+  .row button {
+    padding: 9px;
+  }
+
+  .tools input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 380px) {
+  main {
+    padding: 12px;
+  }
+
+  aside {
+    padding: 14px;
+  }
+
+  .appointment-picker {
+    padding: 12px;
+  }
+
+  .appointment-picker h3 {
+    font-size: 19px;
+  }
+}
+</style>
+</head>
+
+<body>
+<main>
+
+<h1>Choose your treatments</h1>
+
+<p>
+Select one or more treatments, review your cart,
+choose your preferred appointment date and time,
+then continue on WhatsApp. AVORA CLINIC will
+confirm availability and arrange payment.
+</p>
+
+<div class="layout">
+
+<section aria-label="Treatments">
+
+<div class="tools">
+<input
+  id="search"
+  type="search"
+  placeholder="Search treatments"
+  aria-label="Search treatments"
+>
+
+<select id="category" aria-label="Treatment category">
+<option value="all">All treatments</option>
+<option value="Face">Face</option>
+<option value="Medical Aesthetics">Medical Aesthetics</option>
+<option value="Packages">Packages</option>
+</select>
+</div>
+
+<div
+  class="status"
+  id="status"
+  role="status"
+  aria-live="polite"
+></div>
+
+<div id="list" class="list"></div>
+
+</section>
+
+<aside aria-label="Treatment cart">
+
+<h2>
+Your cart
+<span class="count" id="count">(0)</span>
+</h2>
+
+<div id="items"></div>
+
+<div id="total" class="total"></div>
+
+<div class="appointment-picker">
+
+<h3>Choose your preferred date &amp; time</h3>
+
+<label for="appointmentDate">
+Preferred date
+</label>
+
+<div class="date-field" id="dateField">
+  <input
+    id="appointmentDate"
+    type="date"
+    aria-label="Preferred appointment date"
+    required
+  >
+  <span class="date-placeholder" aria-hidden="true">
+    Tap to choose a date
+  </span>
+</div>
+
+<label for="appointmentTime">
+Preferred time (London time)
+</label>
+
+<select id="appointmentTime" required>
+<option value="">Select a time</option>
+<option value="10:00">10:00 AM</option>
+<option value="10:30">10:30 AM</option>
+<option value="11:00">11:00 AM</option>
+<option value="11:30">11:30 AM</option>
+<option value="12:00">12:00 PM</option>
+<option value="12:30">12:30 PM</option>
+<option value="13:00">1:00 PM</option>
+<option value="13:30">1:30 PM</option>
+<option value="14:00">2:00 PM</option>
+<option value="14:30">2:30 PM</option>
+<option value="15:00">3:00 PM</option>
+<option value="15:30">3:30 PM</option>
+<option value="16:00">4:00 PM</option>
+<option value="16:30">4:30 PM</option>
+<option value="17:00">5:00 PM</option>
+<option value="17:30">5:30 PM</option>
+<option value="18:00">6:00 PM</option>
+<option value="18:30">6:30 PM</option>
+<option value="19:00">7:00 PM</option>
+<option value="19:30">7:30 PM</option>
+</select>
+
+<div
+  class="selection-summary"
+  id="appointmentSummary"
+  aria-live="polite"
+>
+Choose your preferred date and time.
+</div>
+
+<p class="small">
+These are preferred times only. Your appointment
+is not confirmed until AVORA CLINIC confirms
+availability on WhatsApp.
+</p>
+
+</div>
+
+<a
+  id="checkout"
+  class="checkout"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-disabled="true"
+>
+Proceed to payment and booking
+</a>
+
+<p class="small">
+WhatsApp opens a message with your selected
+treatments, estimated total, date and time.
+Press Send to contact +44 7721 052325.
+</p>
+
+<p class="small">
+Your appointment is only confirmed after the clinic
+agrees your request on WhatsApp. Prices marked
+"From" are starting prices; the clinic confirms
+the final price.
+</p>
+
+<p class="small">
+Monday–Saturday, 10am–8pm (London time).
+</p>
+
+</aside>
+</div>
+</main>
+
+<script>
+const data = [
+["Face Skin Booster 1 Session","£199","1 hour","Face"],
+["Under Eye Booster 1 Session","£199","1 hour","Face"],
+["Under Eye Booster 3 Sessions","£375","1 hour","Face"],
+["Lip Booster 1 Session","£199","1 hour","Face"],
+["Lip Booster 3 Sessions","£375","1 hour","Face"],
+["Full Face Rejuvenation 1 Session","£449","3 hours","Face"],
+["Full Face Rejuvenation 3 Sessions","£599","3 hours","Face"],
+["Face Skin Booster 3 Sessions","£375","1 hour","Face"],
+["Profhilo 3 Sessions","£700","1 hour","Face"],
+["Profhilo 1 Session","£250","1 hour","Face"],
+["Face Polynucleotides 1 Session","£250","1 hour","Face"],
+["Face Polynucleotides 3 Sessions","£700","1 hour","Face"],
+["Under Eyes Polynucleotides 1 Session","£250","1 hour","Face"],
+["Under Eyes Polynucleotide 3 Sessions","£550","1 hour","Face"],
+["Face & Under Eyes Polynucleotides 1 Session","£450","2 hours","Face"],
+["Face & Under Eyes Polynucleotides 3 Sessions","£999","2 hours","Face"],
+["Salmon DNA Microneedling with LED Light 1 Session","£99","1 hour","Face"],
+["Salmon DNA Microneedling with LED Light 3 Sessions","£250","1 hour","Face"],
+["Stem Cell (Acne Scars) Microneedling with LED Light 1 Session","£99","1 hour","Face"],
+["Stem Cell (Acne Scars) Microneedling with LED Light 3 Sessions","£250","1 hour","Face"],
+["Peptide Gold Microneedling with LED Light 1 Session","£99","1 hour","Face"],
+["Peptide Gold Microneedling with LED Light 3 Sessions","£250","1 hour","Face"],
+["Brightening & Evening Skin Tone Microneedling with LED Light 1 Session","£99","1 hour","Face"],
+["Brightening & Evening Skin Tone Microneedling with LED Light 3 Sessions","£250","1 hour","Face"],
+["Hydrating Microneedling with LED Light 1 Session","£99","1 hour","Face"],
+["Hydrating Microneedling with LED Light 3 Sessions","£250","1 hour","Face"],
+["Excessive Sweating","£400","1 hour","Medical Aesthetics"],
+["Nefertiti Neck Lift","£425","1 hour","Medical Aesthetics"],
+["Forehead Wrinkles","£180","1 hour","Medical Aesthetics"],
+["Consultation","£50","30 minutes","Medical Aesthetics"],
+["Filler Dissolving — One Area","£149","1 hour","Medical Aesthetics"],
+["Full Face Rejuvenation 4ml","From £390","3 hours 15 minutes","Medical Aesthetics"],
+["Jawline Filler 2.2ml","£260","1 hour","Medical Aesthetics"],
+["Chin Filler 1ml","£180","1 hour","Medical Aesthetics"],
+["Tear Trough Filler","£225","1 hour","Medical Aesthetics"],
+["Cheek Filler 1.1ml","£180","1 hour","Medical Aesthetics"],
+["Non-Surgical Rhinoplasty","£215","1 hour","Medical Aesthetics"],
+["Nasolabial Lines (Smile Lines) 1ml","£180","1 hour","Medical Aesthetics"],
+["Marionette Lines 1ml","£180","1 hour","Medical Aesthetics"],
+["Peri-Oral Lines 1ml","£180","1 hour","Medical Aesthetics"],
+["Deep Line Filler 1ml","From £150","1 hour","Medical Aesthetics"],
+["Lips 1.1ml","£180","1 hour","Medical Aesthetics"],
+["Temple Filler","£250","1 hour","Medical Aesthetics"],
+["Jawline Filler 3.3ml","£350","1 hour","Medical Aesthetics"],
+["Russian Lips 1ml","£200","1 hour","Medical Aesthetics"],
+["Chin Filler 2.2ml","£260","1 hour","Medical Aesthetics"],
+["Cheek Filler 2.2ml","£260","1 hour","Medical Aesthetics"],
+["Brow Lift Package","£300","2 hours","Packages"],
+["Skin Rescue Package 1","£300","2 hours","Packages"],
+["Skin Rescue Package 2","£320","3 hours","Packages"],
+["Full Face Rejuvenation 4.4ml","£520","3 hours 15 minutes","Packages"]
+].map(([name, price, duration, category]) => ({
+  name,
+  price,
+  duration,
+  category
+}));
+
+const chosen = new Set();
+
+const el = id => document.getElementById(id);
+
+const money = n => new Intl.NumberFormat('en-GB', {
+  style: 'currency',
+  currency: 'GBP'
+}).format(n);
+
+const cost = x =>
+  Number(x.price.replace(/[^0-9.]/g, ''));
+
+function londonToday() {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(new Date());
+
+  const get = type =>
+    parts.find(p => p.type === type).value;
+
+  return get('year') + '-' +
+    get('month') + '-' +
+    get('day');
+}
+
+function validDate(d) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(d)
+    && d >= londonToday()
+    && !Number.isNaN(
+      new Date(d + 'T12:00:00').getTime()
+    );
+}
+
+function formatDate(d) {
+  return new Date(
+    d + 'T12:00:00'
+  ).toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  });
+}
+
+function formatTime(t) {
+  const [h, m] = t.split(':').map(Number);
+
+  return ((h + 11) % 12 + 1) +
+    ':' +
+    String(m).padStart(2, '0') +
+    (h < 12 ? ' AM' : ' PM');
+}
+
+function updateDatePlaceholder() {
+  const date = el('appointmentDate').value;
+
+  el('dateField').classList.toggle(
+    'has-date',
+    Boolean(date)
+  );
+}
+
+function render() {
+  const q = el('search').value.toLowerCase();
+  const cat = el('category').value;
+
+  el('list').replaceChildren();
+
+  data.forEach((x, i) => {
+    if (
+      (cat !== 'all' && x.category !== cat) ||
+      !x.name.toLowerCase().includes(q)
+    ) {
+      return;
+    }
+
+    const row = document.createElement('div');
+    row.className = 'row';
+
+    const info = document.createElement('div');
+    const h = document.createElement('h3');
+    const m = document.createElement('div');
+    const b = document.createElement('button');
+
+    h.textContent = x.name;
+
+    m.textContent =
+      x.price + ' · ' + x.duration;
+
+    m.className = 'meta';
+
+    info.append(h, m);
+
+    b.textContent = chosen.has(i)
+      ? 'Added ✓'
+      : 'Select';
+
+    b.setAttribute(
+      'aria-label',
+      (chosen.has(i) ? 'Remove ' : 'Select ') +
+      x.name
+    );
+
+    b.setAttribute(
+      'aria-pressed',
+      chosen.has(i)
+    );
+
+    b.onclick = () => {
+      chosen.has(i)
+        ? chosen.delete(i)
+        : chosen.add(i);
+
+      el('status').textContent = chosen.has(i)
+        ? x.name + ' added to your cart.'
+        : x.name + ' removed from your cart.';
+
+      render();
+    };
+
+    row.append(info, b);
+    el('list').append(row);
+  });
+
+  el('items').replaceChildren();
+
+  const selected = [...chosen].map(i => data[i]);
+
+  el('count').textContent =
+    '(' + chosen.size + ')';
+
+  if (!chosen.size) {
+    el('items').textContent =
+      'Your cart is empty. Select treatments to begin.';
+  }
+
+  chosen.forEach(i => {
+    const d = document.createElement('div');
+    const t = document.createElement('div');
+    const b = document.createElement('button');
+
+    d.className = 'item';
+
+    t.textContent =
+      data[i].name + ' — ' + data[i].price;
+
+    b.textContent = 'Remove';
+
+    b.setAttribute(
+      'aria-label',
+      'Remove ' + data[i].name + ' from cart'
+    );
+
+    b.onclick = () => {
+      chosen.delete(i);
+      render();
+    };
+
+    d.append(t, b);
+    el('items').append(d);
+  });
+
+  const sum = selected.reduce(
+    (a, x) => a + cost(x),
+    0
+  );
+
+  const from = selected.some(
+    x => x.price.startsWith('From')
+  );
+
+  el('total').textContent =
+    'Estimated total: ' +
+    (from ? 'from ' : '') +
+    money(sum);
+
+  const a = el('checkout');
+  const date = el('appointmentDate').value;
+  const time = el('appointmentTime').value;
+
+  const ready =
+    chosen.size > 0 &&
+    validDate(date) &&
+    Boolean(time);
+
+  updateDatePlaceholder();
+
+  el('appointmentSummary').textContent =
+    date && time
+      ? 'Requested: ' +
+        formatDate(date) +
+        ' at ' +
+        formatTime(time) +
+        ' (London time)'
+      : 'Choose your preferred date and time.';
+
+  a.setAttribute(
+    'aria-disabled',
+    String(!ready)
+  );
+
+  if (ready) {
+    const message =
+      'Hello AVORA CLINIC,\n\n' +
+      'I would like to request an appointment for:\n\n' +
+      selected.map(
+        x => '• ' + x.name + ' — ' + x.price
+      ).join('\n') +
+      '\n\nEstimated total: ' +
+      (from ? 'from ' : '') +
+      money(sum) +
+      '\nPreferred date: ' +
+      formatDate(date) +
+      '\nPreferred time: ' +
+      formatTime(time) +
+      ' (London time)' +
+      '\n\nPlease confirm availability and final price, and send me payment instructions.' +
+      '\n\nI understand this is a request, not a confirmed appointment.';
+
+    a.href =
+      'https://wa.me/447721052325?text=' +
+      encodeURIComponent(message);
+  } else {
+    a.removeAttribute('href');
+  }
+}
+
+el('appointmentDate').min = londonToday();
+
+el('appointmentDate').addEventListener(
+  'change',
+  () => {
+    if (
+      !validDate(
+        el('appointmentDate').value
+      )
+    ) {
+      el('appointmentDate').value = '';
+    }
+
+    updateDatePlaceholder();
+    render();
+  }
+);
+
+el('appointmentDate').addEventListener(
+  'input',
+  updateDatePlaceholder
+);
+
+el('appointmentTime').addEventListener(
+  'change',
+  render
+);
+
+el('search').oninput = render;
+
+el('category').onchange = render;
+
+el('checkout').addEventListener(
+  'click',
+  e => {
+    if (
+      el('checkout').getAttribute(
+        'aria-disabled'
+      ) === 'true'
+    ) {
+      e.preventDefault();
+    }
+  }
+);
+
+render();
+</script>
+
+</body>
+</html>
